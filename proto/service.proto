@@ -1,0 +1,46 @@
+//protoc -I proto proto/service.proto --go_out=plugins=grpc:proto/
+
+syntax = "proto3";
+
+package proto;
+
+service CsvService {
+  rpc Fetch(FetchRequest) returns (FetchResponse) {}
+  rpc List(ListRequest) returns (ListResponse) {}
+}
+
+message FetchRequest {
+  string url = 1;
+}
+
+message FetchResponse {
+  string message = 1;
+}
+
+message ListRequest {
+  Paging paging = 2;
+  OrderBy order_by = 1;
+}
+
+message Paging {
+  int32 page_size = 1;
+  int32 page_number = 2;
+}
+
+enum OrderBy {
+  Name = 0;
+  LastPrice = 1;
+  CountUpdates = 2;
+  UpdatedAt = 3;
+}
+
+message ListResponse {
+  repeated Product product = 1;
+}
+
+message Product {
+  string name = 1;
+  int32 count_updates = 2;
+  int32 last_price = 3;
+  int64 updated_at = 4;
+}
